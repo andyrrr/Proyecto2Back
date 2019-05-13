@@ -41,6 +41,7 @@ public:
     int FilActual;
 
     bool TipoSeSelecciono;
+    bool pasas;
 
 protected:
     void paintEvent(QPaintEvent *event) override;

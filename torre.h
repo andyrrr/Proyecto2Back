@@ -4,10 +4,9 @@
 #include <QPen>
 #include "flecha.h"
 
-
 using namespace std;
 
-class Gladiador;
+class NodoMatriz;
 class Torre
 {
 public:
@@ -15,8 +14,9 @@ public:
     string getNombre();
     void setNombre(string nombre);
     void setContorno(QColor color);
-    void setTarget(Gladiador *target);
-    void setCordFlecha(int x, int y);
+    void setTarget(NodoMatriz *nodo);
+    NodoMatriz *getTarget();
+    void quitarTarget();
     int CorX;
     int CorY;
     QPen contorno;
@@ -24,9 +24,10 @@ public:
     int Tipo;
 
     Flecha *flecha1;
-    Gladiador *Target;
 
 private:
+
+    NodoMatriz *Target;
     string Nombre="";
 
 };

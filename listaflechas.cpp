@@ -64,11 +64,9 @@ string ListaFlecha::toString() {
     } else {
         while(actual != nullptr){
             if (actual==Inicio){
-                ListaFinal= ListaFinal+"(I:"+to_string(actual->getDato()->CorXIni)+","+to_string(actual->getDato()->CorYIni)+","
-                        +" F:"+to_string(actual->getDato()->CorXFin)+","+to_string(actual->getDato()->CorYFin)+")";
+                ListaFinal= ListaFinal+actual->getDato()->toString();
             }else{
-                ListaFinal= ListaFinal+", "+"(I:"+to_string(actual->getDato()->CorXIni)+","+to_string(actual->getDato()->CorYIni)+","
-                        +" F:"+to_string(actual->getDato()->CorXFin)+","+to_string(actual->getDato()->CorYFin)+")";
+                ListaFinal= ListaFinal+", "+actual->getDato()->toString();
             }
             actual=actual->getSig();
         }

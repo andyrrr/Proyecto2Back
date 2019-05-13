@@ -16,15 +16,16 @@ public:
     void setNombre(string nombre);
     void setCorde();
     void setActual(NodoMatriz *actual);
+    NodoMatriz* getActual();
     bool SalioNodo();
-    void setAtacadoPor(Torre *torre);
     string Nombre="";
     int CorX;
     int CorY;
     ListaNodoMatriz *camino;
+    void QuitarActual1();
+    string toString();
+private:
     NodoMatriz *Actual;
-    Torre *atacadoPor;
-
 };
 
 #endif // GLADIADOR_H

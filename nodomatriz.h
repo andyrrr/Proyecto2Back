@@ -5,6 +5,7 @@
 #include "listatorres.h"
 
 
+class ListaGladiador;
 class NodoMatriz
 {
 public:
@@ -20,6 +21,14 @@ public:
     void setTorre(Torre *torre);
     void setVigilante(Torre *vigilante);
     ListaTorre *listaVigilantes;
+    ListaGladiador *listaGladiadores;
+    void lleganFlechas();
+    //void setAtacadoPor(Torre *torre);
+    //Torre* getAtacadoPor();
+    void quitarAtacadoPor();
+
+private:
+    //Torre *atacadoPor;
 };
 
 #endif // NODOMATRIZ_H

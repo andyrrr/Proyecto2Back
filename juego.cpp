@@ -1,6 +1,8 @@
 #include "juego.h"
 #include <QPainter>
+#include <iostream>
 
+using namespace std;
 Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiador *gladiadores):
     QWidget (parent), listaGladiadores(gladiadores), listaTorres(torres), Dibu(dibujar)
 {
@@ -16,6 +18,7 @@ Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiad
     connect(dis,SIGNAL(progreso()),this,SLOT(recibeDisparo()));
     pro->terminar(false);
     repaint();
+    pasas = true;
 }
 
 void Juego::generarMatriz(){
@@ -37,8 +40,9 @@ void Juego::mousePressEvent(QMouseEvent *event){
                     ColActual=col;
                     FilActual=fila;
                     emit(ponerT());
-                    repaint();
+
                     TipoSeSelecciono=false;
+                    repaint();
                 }
             }
         }
@@ -48,7 +52,6 @@ void Juego::paintEvent(QPaintEvent *event){
     QPainter painter;
     painter.begin(this);
     Dibu->PintarFondo(&painter, 661, 591, QBrush(Qt::green));
-
     TipoSeSelecciono=true;
     if (TipoSeSelecciono){
         for (int fil=0; fil<10;fil++){
@@ -71,18 +74,17 @@ void Juego::paintEvent(QPaintEvent *event){
         temp=listaTorres->retornar(i)->getDato();
         int x=listaTorres->retornar(i)->getDato()->CorX;
         int y=listaTorres->retornar(i)->getDato()->CorY;
-        if (temp->Target!=nullptr){
-            temp->setCordFlecha(temp->Target->CorX, temp->Target->CorY);
-        }
+
         Dibu->PintarTorres(&painter,x,y,listaTorres->retornar(i)->getDato()->contorno,listaTorres->retornar(i)->getDato()->Tipo);
     }
     for (int i=0;i<listaFlechas->tamano();i++){
         Flecha *temp;
         temp = listaFlechas->retornar(i)->getDato();
-        Dibu->PintarFlechas(&painter,temp->CorXCambio,temp->CorYCambio);
-        Dibu->PintarFlechas2(&painter,temp->CorXIni,temp->CorYIni,temp->CorXFin,temp->CorYFin);
+        if (temp->getAsignable()==false){
+            Dibu->PintarFlechas(&painter,temp->getCorXCambio(),temp->getCorYCambio());
+            Dibu->PintarFlechas2(&painter,temp->getCorXIni(),temp->getCorYIni(),temp->getCorXFin(),temp->getCorYFin());
+        }
     }
-
 }
 
 
@@ -96,7 +98,25 @@ void Juego::generarAdyacentes(){
     for(int y = -alcance; y<alcance+1;y++){
         for (int x = -alcance;x<alcance+1;x++){
             if (ColActual+x<10 && ColActual+x>-1 && FilActual+y<10 && FilActual+y>-1){
-                matriz[ColActual+x][FilActual+y]->setVigilante(matriz[ColActual][FilActual]->puesta);
+                if (x==0 && y==0){
+                    cout<<"Mismo nodo"<<endl;
+                }else{
+                    matriz[ColActual+x][FilActual+y]->setVigilante(matriz[ColActual][FilActual]->puesta);
+                    cout<<matriz[ColActual][FilActual]->puesta->getNombre()<<endl;
+                    int xi=matriz[ColActual][FilActual]->puesta->CorX+20;
+                    int yi=matriz[ColActual][FilActual]->puesta->CorY+20;
+                    int xf=matriz[ColActual+x][FilActual+y]->CorX+20;
+                    int yf=matriz[ColActual+x][FilActual+y]->CorY+20;
+                    if((x==-1 && y==-1)||(x==0 && y==-1)||(x==1 && y==-1)
+                        ||(x==-1 && y==0)||(x==1 && y==0)
+                            ||(x==-1 && y==1)||(x==0 && y==1)||(x==1 && y==1)){
+                        cout<<"se mamut"<<endl;
+                    }else{
+                        Flecha *f = new  Flecha(xi,yi,xf,yf);
+                        f->setAsignable1(false);
+                        listaFlechas->agregar(f);
+                    }
+                }
             }
         }
     }
@@ -109,24 +129,25 @@ void Juego::estaEnNodo(Gladiador *p){
     int gy=p->CorY;
     for (int fila=0;fila<10;fila++){
         for (int col = 0; col < 10; col++) {
-            int nodoX=matriz[col][fila]->CorX;
-            int nodoY=matriz[col][fila]->CorY;
-            if (p->Actual!=nullptr && p->SalioNodo() ){
-                p->Actual=nullptr;
-                if (p->atacadoPor!=nullptr){
-                    p->atacadoPor->Target=nullptr;
-                    p->atacadoPor=nullptr;
-                }
+            NodoMatriz *NodoTemporal;
+            NodoTemporal=matriz[col][fila];
+            int nodoX=NodoTemporal->CorX;
+            int nodoY=NodoTemporal->CorY;
+            if (p->getActual()!=nullptr){
+                p->SalioNodo();
             }
 
             if(gx<nodoX+40 && gx>nodoX && gy<nodoY+40 && gy>nodoY){
-                //Se le asigna un target a una torre
-                if (matriz[col][fila]->listaVigilantes->tamano()!=0 && matriz[col][fila]->listaVigilantes->retornar(0)->getDato()->Target==nullptr){
-                    Torre *temp;
-                    temp = matriz[col][fila]->listaVigilantes->retornar(0)->getDato();
-                    temp->setTarget(p);
-                }
-                if (p->Actual==nullptr){
+                //Se le asigna un nodo a una torre
+               for (int i=0;i<NodoTemporal->listaVigilantes->tamano();i++){
+                       Torre *Torretemp;
+                       Torretemp = matriz[col][fila]->listaVigilantes->retornar(i)->getDato();
+                       if (Torretemp->getTarget()==nullptr){
+                           Torretemp->setTarget(NodoTemporal);
+                       }
+                    }
+
+                if (p->getActual()==nullptr){
                     p->setActual(matriz[col][fila]);
                 }
                 matriz[col][fila]->setContorno(Qt::yellow);
@@ -142,6 +163,7 @@ void Juego::recibeCaminar(){
         int cy=listaGladiadores->retornar(i)->getDato()->CorY;
         //verificar nodo salir
         estaEnNodo(listaGladiadores->retornar(i)->getDato());
+        repaint();
         if(cx>800 || cy>650){
             pro->terminar(true);
         }
@@ -150,7 +172,6 @@ void Juego::recibeCaminar(){
 
 void Juego::mostrarNodos(){
     TipoSeSelecciono = true;
-    repaint();
 }
 void Juego::recibeDisparo(){
     for (int i=0;i<listaFlechas->tamano();i++){
@@ -162,6 +183,6 @@ void Juego::recibeDisparo(){
 }
 
 void Juego::iniciarJuego(){
-    pro->start();
+    //pro->start();
     dis->start();
 }
