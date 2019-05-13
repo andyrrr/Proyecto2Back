@@ -1,6 +1,9 @@
 #include "juego.h"
 #include <QPainter>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <cstdlib>
 
 using namespace std;
 Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiador *gladiadores):
@@ -14,6 +17,10 @@ Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiad
     TipoSeSelecciono=false;
     nodoSelec=nullptr;
     generarMatriz();
+    //camp=buscarCamino();
+    //for (int i=0;i<listaGladiadores->tamano();i++){
+    //    listaGladiadores->retornar(i)->getDato()->setCamino(camp);
+    //}
     connect(pro,SIGNAL(progreso()),this,SLOT(recibeCaminar()));
     connect(dis,SIGNAL(progreso()),this,SLOT(recibeDisparo()));
     pro->terminar(false);
@@ -24,7 +31,7 @@ Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiad
 void Juego::generarMatriz(){
     for (int x = 0; x < 10; x++) {
         for (int y=0;y<10;y++) {
-            NodoMatriz *p = new NodoMatriz(x*62+30,y*55+30);
+            NodoMatriz *p = new NodoMatriz(x*62+30,y*56+30);
             matriz[x][y]= p;
         }
     }
@@ -62,9 +69,19 @@ void Juego::paintEvent(QPaintEvent *event){
             }
         }
     }
+    /*for(int i=0;i<camp->tamano();i++){
+        if (camp->retornar(i)->getSig()!=nullptr){
+            int xi=camp->retornar(i)->getDato()->CorX;
+            int yi=camp->retornar(i)->getDato()->CorY;
+            int xf=camp->retornar(i)->getSig()->getDato()->CorX;
+            int yf=camp->retornar(i)->getSig()->getDato()->CorY;
+            Dibu->PintarFlechas2(&painter,xi+20,yi+20,xf+20,yf+20);
+        }
+    }*/
     for (int i=0;i<listaGladiadores->tamano();i++){
-        int x=listaGladiadores->retornar(i)->getDato()->CorX;
-        int y=listaGladiadores->retornar(i)->getDato()->CorY;
+        int x=listaGladiadores->retornar(i)->getDato()->getCorXCambio();
+        int y=listaGladiadores->retornar(i)->getDato()->getCorYCambio();
+
         Dibu->PintarGladiadores(&painter,x,y);
     }
 
@@ -102,20 +119,7 @@ void Juego::generarAdyacentes(){
                     cout<<"Mismo nodo"<<endl;
                 }else{
                     matriz[ColActual+x][FilActual+y]->setVigilante(matriz[ColActual][FilActual]->puesta);
-                    cout<<matriz[ColActual][FilActual]->puesta->getNombre()<<endl;
-                    int xi=matriz[ColActual][FilActual]->puesta->CorX+20;
-                    int yi=matriz[ColActual][FilActual]->puesta->CorY+20;
-                    int xf=matriz[ColActual+x][FilActual+y]->CorX+20;
-                    int yf=matriz[ColActual+x][FilActual+y]->CorY+20;
-                    if((x==-1 && y==-1)||(x==0 && y==-1)||(x==1 && y==-1)
-                        ||(x==-1 && y==0)||(x==1 && y==0)
-                            ||(x==-1 && y==1)||(x==0 && y==1)||(x==1 && y==1)){
-                        cout<<"se mamut"<<endl;
-                    }else{
-                        Flecha *f = new  Flecha(xi,yi,xf,yf);
-                        f->setAsignable1(false);
-                        listaFlechas->agregar(f);
-                    }
+
                 }
             }
         }
@@ -125,8 +129,8 @@ void Juego::generarAdyacentes(){
 
 
 void Juego::estaEnNodo(Gladiador *p){
-    int gx=p->CorX;
-    int gy=p->CorY;
+    int gx=p->getCorXCambio();
+    int gy=p->getCorYCambio();
     for (int fila=0;fila<10;fila++){
         for (int col = 0; col < 10; col++) {
             NodoMatriz *NodoTemporal;
@@ -156,11 +160,55 @@ void Juego::estaEnNodo(Gladiador *p){
     }
 }
 
+ListaNodoMatriz* Juego::buscarCamino(){
+    ListaNodoMatriz *camino= new ListaNodoMatriz();
+    cout<<"Aloooooo"<<camino->toString()<<endl;
+    NodoMatriz *inicio;
+    NodoMatriz *actual;
+    NodoMatriz *final;
+    inicio= matriz[0][0];
+    final= matriz[9][9];
+    int col=0;
+    int fil=0;
+    actual=inicio;
+    camino->agregar(actual);
+    srand(time(NULL));
+    while (actual!=final){
+        int caso=0;
+        caso=rand()%3;
+        if (caso==0){
+            if ((col+1)<10){
+                col=col+1;
+                actual=matriz[col][fil];
+                camino->agregar(actual);
+            }
+
+        }else if (caso==1){
+            if ((fil+1)<10){
+                fil=fil+1;
+                actual=matriz[col][fil];
+                camino->agregar(actual);
+            }
+
+        }else if (caso ==2){
+            if((col+1)<10 && (fil+1)<10){
+                col=col+1;
+                fil=fil+1;
+                actual=matriz[col][fil];
+                camino->agregar(actual);
+            }
+        }
+
+    }
+    cout<<camino->toString()<<endl;
+    return camino;
+}
+
 void Juego::recibeCaminar(){
     for (int i=0;i<listaGladiadores->tamano();i++){
         listaGladiadores->retornar(i)->getDato()->setCorde();
-        int cx=listaGladiadores->retornar(i)->getDato()->CorX;
-        int cy=listaGladiadores->retornar(i)->getDato()->CorY;
+        int cx=listaGladiadores->retornar(i)->getDato()->getCorXCambio();
+        int cy=listaGladiadores->retornar(i)->getDato()->getCorYCambio();
         //verificar nodo salir
         estaEnNodo(listaGladiadores->retornar(i)->getDato());
         repaint();
@@ -183,6 +231,10 @@ void Juego::recibeDisparo(){
 }
 
 void Juego::iniciarJuego(){
-    //pro->start();
+    srand(time(NULL));
+    for (int i=0;i<listaGladiadores->tamano();i++){
+        listaGladiadores->retornar(i)->getDato()->buscarCamino(matriz);
+    }
+    pro->start();
     dis->start();
 }

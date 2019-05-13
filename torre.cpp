@@ -15,6 +15,7 @@ Torre::Torre(int corx, int cory,int tipo):CorX(corx),CorY(cory),Tipo(tipo)
     flecha1 = new Flecha(CorX,CorY,CorX,CorY);
 }
 void Torre::quitarTarget(){
+    cout<<"Se quita el target de la torre"<<endl;
     Target=nullptr;
 }
 
@@ -47,13 +48,13 @@ void Torre::setTarget(NodoMatriz *nodo){
         cout<<"Flecha ocupada------------------------------------"<<endl;
     }else{
     Target = nodo;
-    //cout<<"Target: "<<Target->toSting()<<"--------------------"<<endl;
+    cout<<"Target puesto --------------------"<<endl;
     //cout<<CorX<<","<<CorY<<endl;
     flecha1->setCorXIni(CorX+20);
     flecha1->setCorYIni(CorY+20);
     flecha1->setCorXFin(Target->CorX+20);
     flecha1->setCorYFin(Target->CorY+20);
-    flecha1->setAsignable1(false);
+    flecha1->setAsignable(false);
     cout<<flecha1->toString()<<endl;
     cout<<"Se cambio la direccion de la flecha"<<endl;
     }

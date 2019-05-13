@@ -40,8 +40,11 @@ public:
     int ColActual;
     int FilActual;
 
+    ListaNodoMatriz *buscarCamino();
+
     bool TipoSeSelecciono;
     bool pasas;
+    ListaNodoMatriz *camp;
 
 protected:
     void paintEvent(QPaintEvent *event) override;

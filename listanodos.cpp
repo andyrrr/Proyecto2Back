@@ -39,8 +39,8 @@ void ListaNodoMatriz::agregar(NodoMatriz *dato) {
         this->setFin(actual);
     } else {
         actual = new NodoNodoMatriz(dato);
-        actual->setSig(Inicio);
-        this->setInicio(actual);
+        this->getFin()->setSig(actual);
+        this->setFin(actual);
 
     }
 }
@@ -65,7 +65,7 @@ string ListaNodoMatriz::toString() {
     } else {
         while(actual != nullptr){
             if (actual==Inicio){
-                ListaFinal = to_string(5);
+                ListaFinal = "[";
                 ListaFinal= ListaFinal + "("+to_string(actual->getDato()->CorX)+","+to_string(actual->getDato()->CorY)+")";
             }else{
                 ListaFinal= ListaFinal+", "+ "("+to_string(actual->getDato()->CorX)+","+to_string(actual->getDato()->CorY)+")";

@@ -53,7 +53,9 @@ void Inicio::getTorres(){
 void Inicio::getGladiadores(){
     for (int x=0;x<5;x++){
             for (int y=0;y<5;y++){
-                Gladiador *nuevo = new Gladiador((x*30)-4*30,(y*30)-3*30);
+                //Gladiador *nuevo = new Gladiador((x*30)-4*30,(y*30)-3*30);
+
+                Gladiador *nuevo = new Gladiador(0,0);
                 string nombre = "Gladiador"+to_string(x)+to_string(y);
                 nuevo->setNombre(nombre);
                 listaGladiadores->agregar(nuevo);

@@ -12,7 +12,7 @@ Flecha::Flecha(int corxi,int coryi,int corxf,int coryf):
 {
     llegaX=false;
     llegaY=false;
-    Asignable2=true;
+    Asignable=true;
 
 }
 
@@ -40,13 +40,8 @@ void Flecha::setllegaX(bool llegax){
 void Flecha::setllegaY(bool llegay){
     llegaY=llegay;
 }
-void Flecha::setAsignable1(bool asignable){
-    if(Asignable2){
-        cout<<"Asignable pasa de V a F"<<endl;
-    } else {
-        cout<<"Asignable pasa de F a V"<<endl;
-    }
-    Asignable2=asignable;
+void Flecha::setAsignable(bool asignable){
+    Asignable=asignable;
 }
 void Flecha::setCorXIni(int corxi){
     CorXCambio=corxi;
@@ -78,7 +73,7 @@ bool Flecha::getllegaY(){
     return llegaY;
 }
 bool Flecha::getAsignable(){
-    return Asignable2;
+    return Asignable;
 }
 
 void Flecha::setCorde(){
@@ -112,7 +107,10 @@ void Flecha::setCorde(){
         CorYCambio=CorYIni;
         llegaX=false;
         llegaY=false;
-        //Asignable2=true;
+        if (CorXIni!=CorXFin && CorXIni!=CorXFin){
+            cout<<"Flecha termina "<<endl;
+        }
+        Asignable=true;
     }
 }
 

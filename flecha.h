@@ -23,7 +23,7 @@ public:
     int getCorYCambio();
     void setllegaX(bool llegax);
     void setllegaY(bool llegay);
-    void setAsignable1(bool asignable);
+    void setAsignable(bool asignable);
     string toString();
 
     bool getllegaX();
@@ -40,7 +40,7 @@ protected:
     int CorYCambio;
     bool llegaX;
     bool llegaY;
-    bool Asignable2;
+    bool Asignable;
 };
 
 #endif // FLECHA_H
