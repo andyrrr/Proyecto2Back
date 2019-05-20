@@ -20,15 +20,8 @@ Gladiador::Gladiador(int corx, int cory)
     Camino = new ListaNodoMatriz();
     LlegaFinal=false;
     ContNodo=0;
+    Resistencia=0;
 }
-/*
-void Gladiador::setCamino1(ListaNodoMatriz *camino){
-    ContNodo=0;
-    Camino=camino;
-    setCorFin(Camino->retornar(ContNodo)->getDato());
-
-}
-*/
 
 void Gladiador::setActual(NodoMatriz *actual){
     Actual=actual;
@@ -47,8 +40,7 @@ void Gladiador::setCorCambio(int corx, int cory){
     CorYCambio=cory;
 }
 
-void Gladiador::QuitarActual1(){
-    Actual->quitarAtacadoPor();
+void Gladiador::QuitarActual(){
     Actual=nullptr;
 
 }
@@ -84,27 +76,38 @@ bool Gladiador::getLlegaFinal(){
     return LlegaFinal;
 }
 
+int Gladiador::getResistencia(){
+    return Resistencia;
+}
 
-bool Gladiador::SalioNodo(){
+void Gladiador::setResistencia(int daño){
+    cout<<"ME ATACAN AAAA"<<endl;
+    Resistencia=Resistencia-daño;
+}
+
+void Gladiador::SalioNodo(){
+    if (Actual!=nullptr){
     int nodoX=Actual->CorX;
     int nodoY=Actual->CorY;
     if(!(CorXCambio<nodoX+40 && CorXCambio>nodoX && CorYCambio<nodoY+40 && CorYCambio>nodoY)){
         Actual->setContorno(Qt::black);
-        QuitarActual1();
-        return true;
+        QuitarActual();
     }
-    return false;
+    }
+}
+ListaNodoMatriz* Gladiador::getCamino(){
+    return Camino;
 }
 void Gladiador::setNombre(string nombre){
     Nombre=nombre;
 }
-void Gladiador::buscarCamino(NodoMatriz *matriz[10][10]){
+void Gladiador::buscarCamino(NodoMatriz *matriz[12][12]){
     cout<<"entra"<<endl;
     NodoMatriz *inicio;
     NodoMatriz *actual;
     NodoMatriz *final;
     inicio= matriz[0][0];
-    final= matriz[9][9];
+    final= matriz[11][11];
     int col=0;
     int fil=0;
     actual=inicio;
@@ -113,21 +116,21 @@ void Gladiador::buscarCamino(NodoMatriz *matriz[10][10]){
         int caso=0;
         caso=rand()%3;
         if (caso==0){
-            if ((col+1)<10 && matriz[col+1][fil]->free){
+            if ((col+1)<12 && matriz[col+1][fil]->free){
                 col=col+1;
                 actual=matriz[col][fil];
                 Camino->agregar(actual);
             }
 
         }else if (caso==1 ){
-            if ((fil+1)<10 && matriz[col][fil+1]->free){
+            if ((fil+1)<12 && matriz[col][fil+1]->free){
                 fil=fil+1;
                 actual=matriz[col][fil];
                 Camino->agregar(actual);
             }
 
         }else if (caso ==2){
-            if((col+1)<10 && (fil+1)<10 && matriz[col+1][fil+1]->free){
+            if((col+1)<12 && (fil+1)<12 && matriz[col+1][fil+1]->free){
                 col=col+1;
                 fil=fil+1;
                 actual=matriz[col][fil];
@@ -177,17 +180,13 @@ void Gladiador::setCorde(){
             llegaX=false;
             llegaY=false;
         }else{
-            cout<<"Alo desde:  "<<getNombre()<<endl;
+            cout<<getNombre()<<" llegó"<<endl;
             cout<<ContNodo<<endl;
-            //NodoMatriz *temp;
-            //temp= new NodoMatriz(Camino->retornar(ContNodo)->getDato()->CorX+40,
-                       //Camino->retornar(ContNodo)->getDato()->CorY+40);
-            //setCorFin(temp);
             LlegaFinal=true;
         }
     }
 }
 
 string Gladiador::toString(){
-    return this->getNombre()+" (X:"+to_string(CorXCambio)+", Y:"+to_string(CorYCambio);
+    return this->getNombre()+" (X:"+to_string(CorXCambio)+", Y:"+to_string(CorYCambio)+")";
 }

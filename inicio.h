@@ -30,9 +30,9 @@ public:
     ListaGladiador *listaGladiadores;
     ListaTorre *listaTorres;
 
-    Juego *Juego1;
-    CapaTorres *torres;
-    CapaGladiador *gladiador;
+    Juego *Juego1=nullptr;
+    CapaTorres *torres=nullptr;
+    CapaGladiador *gladiador=nullptr;
     int cont=0;
 
     Torre * tomarUnaTorre(int tipo);
@@ -41,10 +41,13 @@ public:
 private slots:
     void on_BttnIniciar_clicked();
     void revisar();
+    void Iteracion();
 
 private:
     Ui::Inicio *ui;
-    Dibujar dibu;
+    Dibujar dibuTorres;
+    Dibujar dibuGla;
+    Dibujar dibuJuego;
 };
 
 #endif // INICIO_H

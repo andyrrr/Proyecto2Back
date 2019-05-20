@@ -17,28 +17,35 @@ Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiad
     TipoSeSelecciono=false;
     nodoSelec=nullptr;
     generarMatriz();
-    //camp=buscarCamino();
-    //for (int i=0;i<listaGladiadores->tamano();i++){
-    //    listaGladiadores->retornar(i)->getDato()->setCamino(camp);
-    //}
     connect(pro,SIGNAL(progreso()),this,SLOT(recibeCaminar()));
     connect(dis,SIGNAL(progreso()),this,SLOT(recibeDisparo()));
+
+
     pro->terminar(false);
     repaint();
     pasas = true;
+
+    cout<<"-----------------------------------------------------------------------------------------------"<<endl;
+    cout<<"Gladiadores--------------------------------------------------------------"<<endl;
+    cout<<listaGladiadores->toString()<<endl;
+    cout<<"torres--------------------------------------------------------------"<<endl;
+    cout<<listaTorres->toString()<<endl;
+    cout<<"flecchas--------------------------------------------------------------"<<endl;
+    cout<<listaFlechas->toString()<<endl;
 }
 
 void Juego::generarMatriz(){
-    for (int x = 0; x < 10; x++) {
-        for (int y=0;y<10;y++) {
-            NodoMatriz *p = new NodoMatriz(x*62+30,y*56+30);
+    for (int x = 0; x < 12; x++) {
+        for (int y=0;y< 12;y++) {
+            NodoMatriz *p = new NodoMatriz(x*52+30,y*46+30);
+            p->setGladiadores(listaGladiadores);
             matriz[x][y]= p;
         }
     }
 }
 void Juego::mousePressEvent(QMouseEvent *event){
-    for (int fila=0;fila<10;fila++){
-            for (int col = 0; col < 10; col++) {
+    for (int fila=0;fila<12;fila++){
+            for (int col = 0; col < 12; col++) {
                 int nodoX=matriz[col][fila]->CorX;
                 int nodoY=matriz[col][fila]->CorY;
                 if(event->x()<nodoX+40 && event->x()>nodoX && event->y()<nodoY+40 && event->y()>nodoY){
@@ -46,30 +53,41 @@ void Juego::mousePressEvent(QMouseEvent *event){
                     nodoSelec->setContorno(Qt::red);
                     ColActual=col;
                     FilActual=fila;
-                    emit(ponerT());
+                    emit(ponerTorre());
 
                     TipoSeSelecciono=false;
                     repaint();
+
                 }
             }
         }
+    for (int i=0;i<listaGladiadores->tamano();i++){
+        Gladiador *temp=listaGladiadores->retornar(i)->getDato();
+        int glaX= temp->getCorXCambio();
+        int glaY= temp->getCorYCambio();
+        if(event->x()<glaX+20 && event->x()>glaX && event->y()<glaY+20 && event->y()>glaY){
+            cout<<"Se presionó el gladiador: "<<temp->getNombre()<<endl;
+            emit (mostrarGladiador());
+            break;
+        }
+    }
 }
 
 void Juego::paintEvent(QPaintEvent *event){
     QPainter painter;
     painter.begin(this);
     Dibu->PintarFondo(&painter, 661, 591, QBrush(Qt::green));
-    TipoSeSelecciono=true;
+    //TipoSeSelecciono=true;
     if (TipoSeSelecciono){
-        for (int fil=0; fil<10;fil++){
-            for (int col=0;col<10;col++){
+        for (int fil=0; fil<12;fil++){
+            for (int col=0;col<12;col++){
                 int x= matriz[col][fil]->CorX;
                 int y= matriz[col][fil]->CorY;
                 Dibu->PintarMatriz(&painter,x,y,matriz[col][fil]->contorno);
             }
         }
-    }
-    /*for(int i=0;i<camp->tamano();i++){
+    }/*
+    for(int i=0;i<camp->tamano();i++){
         if (camp->retornar(i)->getSig()!=nullptr){
             int xi=camp->retornar(i)->getDato()->CorX;
             int yi=camp->retornar(i)->getDato()->CorY;
@@ -99,7 +117,7 @@ void Juego::paintEvent(QPaintEvent *event){
         temp = listaFlechas->retornar(i)->getDato();
         if (temp->getAsignable()==false){
             Dibu->PintarFlechas(&painter,temp->getCorXCambio(),temp->getCorYCambio());
-            Dibu->PintarFlechas2(&painter,temp->getCorXIni(),temp->getCorYIni(),temp->getCorXFin(),temp->getCorYFin());
+            //Dibu->PintarFlechas2(&painter,temp->getCorXIni(),temp->getCorYIni(),temp->getCorXFin(),temp->getCorYFin());
         }
     }
 }
@@ -114,7 +132,7 @@ void Juego::generarAdyacentes(){
     }
     for(int y = -alcance; y<alcance+1;y++){
         for (int x = -alcance;x<alcance+1;x++){
-            if (ColActual+x<10 && ColActual+x>-1 && FilActual+y<10 && FilActual+y>-1){
+            if (ColActual+x<12 && ColActual+x>-1 && FilActual+y<12 && FilActual+y>-1){
                 if (x==0 && y==0){
                     cout<<"Mismo nodo"<<endl;
                 }else{
@@ -131,16 +149,13 @@ void Juego::generarAdyacentes(){
 void Juego::estaEnNodo(Gladiador *p){
     int gx=p->getCorXCambio();
     int gy=p->getCorYCambio();
-    for (int fila=0;fila<10;fila++){
-        for (int col = 0; col < 10; col++) {
+    for (int fila=0;fila<12;fila++){
+        for (int col = 0; col < 12; col++) {
             NodoMatriz *NodoTemporal;
             NodoTemporal=matriz[col][fila];
             int nodoX=NodoTemporal->CorX;
             int nodoY=NodoTemporal->CorY;
-            if (p->getActual()!=nullptr){
-                p->SalioNodo();
-            }
-
+            p->SalioNodo();
             if(gx<nodoX+40 && gx>nodoX && gy<nodoY+40 && gy>nodoY){
                 //Se le asigna un nodo a una torre
                for (int i=0;i<NodoTemporal->listaVigilantes->tamano();i++){
@@ -160,66 +175,48 @@ void Juego::estaEnNodo(Gladiador *p){
     }
 }
 
-ListaNodoMatriz* Juego::buscarCamino(){
-    ListaNodoMatriz *camino= new ListaNodoMatriz();
-    cout<<"Aloooooo"<<camino->toString()<<endl;
-    NodoMatriz *inicio;
-    NodoMatriz *actual;
-    NodoMatriz *final;
-    inicio= matriz[0][0];
-    final= matriz[9][9];
-    int col=0;
-    int fil=0;
-    actual=inicio;
-    camino->agregar(actual);
-    srand(time(NULL));
-    while (actual!=final){
-        int caso=0;
-        caso=rand()%3;
-        if (caso==0){
-            if ((col+1)<10){
-                col=col+1;
-                actual=matriz[col][fil];
-                camino->agregar(actual);
-            }
-
-        }else if (caso==1){
-            if ((fil+1)<10){
-                fil=fil+1;
-                actual=matriz[col][fil];
-                camino->agregar(actual);
-            }
-
-        }else if (caso ==2){
-            if((col+1)<10 && (fil+1)<10){
-                col=col+1;
-                fil=fil+1;
-                actual=matriz[col][fil];
-                camino->agregar(actual);
-            }
-        }
-
-    }
-    cout<<camino->toString()<<endl;
-    return camino;
-}
 
 void Juego::recibeCaminar(){
     for (int i=0;i<listaGladiadores->tamano();i++){
-        listaGladiadores->retornar(i)->getDato()->setCorde();
-        int cx=listaGladiadores->retornar(i)->getDato()->getCorXCambio();
-        int cy=listaGladiadores->retornar(i)->getDato()->getCorYCambio();
-        //verificar nodo salir
-        estaEnNodo(listaGladiadores->retornar(i)->getDato());
-        repaint();
-        if(cx>800 || cy>650){
-            pro->terminar(true);
+        Gladiador *temp=listaGladiadores->retornar(i)->getDato();
+        temp->setCorde();
+        estaEnNodo(temp);
+
+        if (Mejor1 == nullptr || temp->getResistencia()>Mejor1->getResistencia()){
+            Mejor1=temp;
+            cout<<"Mejor 1: "<<Mejor1->getNombre()<<endl;
+            cout<<"----------------------------------------------------------------------------------------------"<<endl;
         }
+        if (Mejor2 == nullptr || (temp->getResistencia()>Mejor2->getResistencia() && temp!=Mejor1)){
+            Mejor2=temp;
+
+            cout<<"Mejor 2: "<<Mejor2->getNombre()<<endl;
+
+            cout<<"----------------------------------------------------------------------------------------------"<<endl;
+        }
+        repaint();
+    }
+
+    if(listaGladiadores->tamano()==0 || GladiadoresLlegan()){
+        pro->terminar(true);
+        pro->quit();
+        dis->quit();
+        emit(terminaIteracion());
     }
 }
 
+bool Juego::GladiadoresLlegan(){
+    for (int i=0;i<listaGladiadores->tamano();i++){
+        Gladiador *temp= listaGladiadores->retornar(i)->getDato();
+        if(temp->ContNodo!=temp->getCamino()->tamano() && !(temp->getLlegaFinal())){
+            return false;
+        }
+    }
+    return true;
+}
 void Juego::mostrarNodos(){
     TipoSeSelecciono = true;
+    repaint();
 }
 void Juego::recibeDisparo(){
     for (int i=0;i<listaFlechas->tamano();i++){

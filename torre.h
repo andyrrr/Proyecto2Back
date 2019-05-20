@@ -3,11 +3,12 @@
 #include <string>
 #include <QPen>
 #include "flecha.h"
+#include <QObject>
 
 using namespace std;
 
 class NodoMatriz;
-class Torre
+class Torre : public QObject
 {
 public:
     Torre(int corx, int cory, int tipo);
@@ -16,7 +17,9 @@ public:
     void setContorno(QColor color);
     void setTarget(NodoMatriz *nodo);
     NodoMatriz *getTarget();
-    void quitarTarget();
+    void quitarTarget1();
+
+
     int CorX;
     int CorY;
     QPen contorno;
@@ -29,7 +32,8 @@ private:
 
     NodoMatriz *Target;
     string Nombre="";
-
+    int Daño;
 };
+
 
 #endif // TORRE_H

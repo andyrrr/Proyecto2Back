@@ -15,27 +15,32 @@ Inicio::Inicio(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Inicio)
 {
-    listaTorres = new ListaTorre();
-    listaGladiadores = new ListaGladiador();
 
+    ui->setupUi(this);
+    Iteracion();
+/*
     getTorres();
     getGladiadores();
 
-    ui->setupUi(this);
-    Juego1 = new Juego(&dibu,this, listaTorres, listaGladiadores);
+    Juego1 = new Juego(&dibuJuego,this, listaTorres, listaGladiadores);
+    torres = new CapaTorres(&dibuTorres,this);
+    gladiador = new CapaGladiador(&dibuGla,this);
+
+
     ui->LayoutJuego->addWidget(Juego1,0,Qt::Alignment());
 
-    torres = new CapaTorres(&dibu,this);
+
     ui->LayoutTorres->addWidget(torres,0,Qt::Alignment());
 
-    gladiador = new CapaGladiador(&dibu,this);
     ui->LayoutGladiadores->addWidget(gladiador,0,Qt::Alignment());
 
-    connect(Juego1,SIGNAL(ponerT()),this,SLOT(revisar()));
+    connect(Juego1,SIGNAL(ponerTorre()),this,SLOT(revisar()));
     connect(torres,SIGNAL(SeleccionoTipo()),Juego1,SLOT(mostrarNodos()));
-
-
+    connect(Juego1,SIGNAL(mostrarGladiador()),gladiador,SLOT(recibirGladidor()));
+    connect(Juego1,SIGNAL(terminaIteracion()),this,SLOT(Iteracion()));
+*/
 }
+
 
 void Inicio::getTorres(){
     int cont=0;
@@ -51,13 +56,21 @@ void Inicio::getTorres(){
 }
 
 void Inicio::getGladiadores(){
+    srand(time(0));
     for (int x=0;x<5;x++){
             for (int y=0;y<5;y++){
                 //Gladiador *nuevo = new Gladiador((x*30)-4*30,(y*30)-3*30);
-
+                int r= rand()%20;
                 Gladiador *nuevo = new Gladiador(0,0);
                 string nombre = "Gladiador"+to_string(x)+to_string(y);
+                cout<<nombre<<" :"<<" con resistencia: "<<r<<endl;
+                nuevo->Resistencia=r;
                 nuevo->setNombre(nombre);
+                cout<<nuevo->toString()<<endl;
+                cout<<""<<nuevo->getResistencia()<<endl;
+                cout<<"-----------------------------"<<endl;
+
+
                 listaGladiadores->agregar(nuevo);
                 //cout<<(x*30)-4*30<<","<<(y*30)-3*30<<endl;
             }
@@ -85,6 +98,39 @@ void Inicio::revisar(){
             Juego1->nodoSelec=nullptr;
         }
     }
+}
+
+void Inicio::Iteracion(){
+    cont=0;
+    cout<<"LLEGA A ITERACION------------------------------------------------------"<<endl;
+    if (Juego1!=nullptr){
+
+        Juego1->close();
+        torres->close();
+        gladiador->close();
+
+    }
+    listaTorres = new ListaTorre();
+    listaGladiadores = new ListaGladiador();
+
+    getTorres();
+    getGladiadores();
+    Juego1 = new Juego(&dibuJuego,this, listaTorres, listaGladiadores);
+    torres = new CapaTorres(&dibuTorres,this);
+    gladiador = new CapaGladiador(&dibuGla,this);
+
+
+    ui->LayoutJuego->addWidget(Juego1,0,Qt::Alignment());
+    ui->LayoutTorres->addWidget(torres,0,Qt::Alignment());
+    ui->LayoutGladiadores->addWidget(gladiador,0,Qt::Alignment());
+
+
+
+    connect(Juego1,SIGNAL(ponerTorre()),this,SLOT(revisar()));
+    connect(torres,SIGNAL(SeleccionoTipo()),Juego1,SLOT(mostrarNodos()));
+    connect(Juego1,SIGNAL(mostrarGladiador()),gladiador,SLOT(recibirGladidor()));
+    connect(Juego1,SIGNAL(terminaIteracion()),this,SLOT(Iteracion()));
+
 }
 
 Inicio::~Inicio()

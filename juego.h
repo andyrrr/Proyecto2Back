@@ -33,18 +33,21 @@ public:
     void generarMatriz();
 
     NodoMatriz *nodoSelec;
-    NodoMatriz *matriz [10][10];
+    NodoMatriz *matriz [12][12];
 
     void generarAdyacentes();
     void estaEnNodo(Gladiador *p);
     int ColActual;
     int FilActual;
+    Gladiador *Mejor1=nullptr;
+    Gladiador *Mejor2=nullptr;
 
     ListaNodoMatriz *buscarCamino();
 
     bool TipoSeSelecciono;
     bool pasas;
-    ListaNodoMatriz *camp;
+    ListaNodoMatriz *camp = new ListaNodoMatriz();
+    bool GladiadoresLlegan();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -53,7 +56,9 @@ private:
     Dibujar *Dibu;
 
 signals:
-    void ponerT();
+    void ponerTorre();
+    void mostrarGladiador();
+    void terminaIteracion();
 public slots:
     void recibeCaminar();
     void mostrarNodos();

@@ -1,10 +1,14 @@
 #include "workercaminar.h"
 #include <unistd.h>
 
+#include <iostream>
+
+using namespace std;
 
 
 WorkerCaminar::WorkerCaminar(QObject *parent): QThread(parent)
 {
+    cout<<"Se inicializa el worker para caminar"<<endl;
     end=false;
 }
 
@@ -14,9 +18,12 @@ void WorkerCaminar::terminar(bool cambio){
 }
 
 void WorkerCaminar::run(){
+
+    cout<<"Se inicia el thread caminar"<<endl;
     int segundos=0;
     while (end==false){
-        usleep(200000);
+        //200000
+        usleep(100000);
         segundos++;
         emit progreso();
     }

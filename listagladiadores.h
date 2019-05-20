@@ -33,6 +33,8 @@ public:
     void setFin(NodoGladiador *fin);
     NodoGladiador *Inicio;
     NodoGladiador *Fin;
+
+    void eliminar(Gladiador *gladiador);
 };
 
 #endif // LISTAGLADIADORES_H

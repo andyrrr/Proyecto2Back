@@ -3,10 +3,11 @@
 #include <string>
 
 using namespace std;
+class Torre;
 class Flecha
 {
 public:
-    Flecha(int corxi,int coryi,int corxf,int coryf);
+    Flecha(Torre *padre,int corxi,int coryi,int corxf,int coryf);
 
     void setCorXIni(int corx);
     void setCorYIni(int cory);
@@ -30,7 +31,8 @@ public:
     bool getllegaY();
     bool getAsignable();
 
-
+    int getDaño();
+    void setDaño(int daño);
 protected:
     int CorXIni;
     int CorYIni;
@@ -41,6 +43,9 @@ protected:
     bool llegaX;
     bool llegaY;
     bool Asignable;
+    int Daño;
+    Torre *Padre;
+
 };
 
 #endif // FLECHA_H

@@ -30,6 +30,26 @@ bool ListaGladiador::estaVacia() {
 }
 
 
+void ListaGladiador::eliminar(Gladiador *gladiador){
+    NodoGladiador *actual = this->getInicio();
+    if (this->getInicio()->getDato()==gladiador){
+        this->setInicio(Inicio->getSig());
+    }else {
+        while(actual->getSig()!=nullptr){
+             if(actual->getSig()->getDato() == gladiador){
+                if(actual->getSig()->getSig()==nullptr){
+                    actual->setSig(nullptr);
+                    break;
+                }else{
+                    actual->setSig(actual->getSig()->getSig());
+                }
+            }
+            actual = actual->getSig();
+        }
+    }
+}
+
+
 void ListaGladiador::agregar(Gladiador *dato) {
     NodoGladiador *actual= this->getInicio();
     if (estaVacia()){

@@ -1,19 +1,29 @@
 #include "flecha.h"
 #include <string>
 #include <iostream>
+#include "torre.h"
 
 using namespace std;
 
 
 
-Flecha::Flecha(int corxi,int coryi,int corxf,int coryf):
+Flecha::Flecha(Torre *padre,int corxi,int coryi,int corxf,int coryf):
     CorXIni(corxi),CorYIni(coryi),CorXFin(corxf),CorYFin(coryf),
-    CorXCambio(corxi),CorYCambio(coryi)
+    CorXCambio(corxi),CorYCambio(coryi),Padre(padre)
 {
     llegaX=false;
     llegaY=false;
     Asignable=true;
 
+}
+
+
+int Flecha::getDaño(){
+    return Daño;
+}
+
+void Flecha::setDaño(int daño){
+    Daño=daño;
 }
 
 int Flecha::getCorXIni(){
@@ -107,9 +117,7 @@ void Flecha::setCorde(){
         CorYCambio=CorYIni;
         llegaX=false;
         llegaY=false;
-        if (CorXIni!=CorXFin && CorXIni!=CorXFin){
-            cout<<"Flecha termina "<<endl;
-        }
+        Padre->quitarTarget1();
         Asignable=true;
     }
 }

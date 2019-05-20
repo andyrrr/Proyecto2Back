@@ -16,6 +16,10 @@ NodoMatriz::NodoMatriz(int corx,int cory): CorX(corx),CorY(cory)
 
 }
 
+void NodoMatriz::setGladiadores(ListaGladiador *gladiadores){
+    listaGladiadores=gladiadores;
+}
+
 void NodoMatriz::setContorno(QColor color){
     contorno.setColor(color);
 }/*
@@ -27,17 +31,6 @@ Torre* NodoMatriz::getAtacadoPor(){
     return atacadoPor;
 }*/
 
-void NodoMatriz::quitarAtacadoPor(){
-    for (int i=0 ;i<listaVigilantes->tamano();i++){
-        Torre *temp;
-        temp= listaVigilantes->retornar(i)->getDato();
-        if (temp->getTarget()==this){
-            temp->quitarTarget();
-        }
-    }
-    //atacadoPor->quitarTarget();
-    //atacadoPor=nullptr;
-}
 
 void NodoMatriz::setTorre(Torre *torre){
     puesta=torre;
@@ -56,11 +49,21 @@ string NodoMatriz::toSting(){
     return nombre;
 }
 
-void NodoMatriz::lleganFlechas(){
+void NodoMatriz::lleganFlechas(int daño){
     cout<<"Gladiadores atacados"<<endl;
+    cout<<this->toSting()<<"Ataca----------------------------"<<endl;
     for (int i=0;i<listaGladiadores->tamano();i++){
         Gladiador *glaTemp;
         glaTemp = listaGladiadores->retornar(i)->getDato();
-        cout<<glaTemp->toString()<<endl;
+        if (glaTemp->getActual()==this){
+            cout<<glaTemp->toString()<<endl;
+            glaTemp->setResistencia(daño);
+            cout<<"-----------------------------"<<endl;
+            if (glaTemp->getResistencia()<=0){
+                cout<<"Se elimina el gladiador"<<endl;
+                glaTemp->QuitarActual();
+                listaGladiadores->eliminar(glaTemp);
+            }
+        }
     }
 }

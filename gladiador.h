@@ -19,7 +19,7 @@ public:
     void setCorFin(NodoMatriz *nodo);
     void setCorCambio(int corx, int cory);
     void setActual(NodoMatriz *actual);
-    //void setCamino1(ListaNodoMatriz *camino);
+    void setResistencia(int daño);
 
     string getNombre();
     NodoMatriz* getActual();
@@ -31,12 +31,17 @@ public:
     int getCorYCambio();
     bool getLlegaNodo();
     bool getLlegaFinal();
-    ListaNodoMatriz * getCamino();
-    void buscarCamino(NodoMatriz *matriz[10][10]);
-    NodoMatriz *matriz[10][10];
+    int getResistencia();
 
-    bool SalioNodo();
-    void QuitarActual1();
+    int Resistencia;
+
+    ListaNodoMatriz * getCamino();
+    void buscarCamino(NodoMatriz *matriz[12][12]);
+    NodoMatriz *matriz[12][12];
+
+
+    void SalioNodo();
+    void QuitarActual();
     string toString();
     int ContNodo;
 private:

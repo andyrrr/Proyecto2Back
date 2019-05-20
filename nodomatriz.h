@@ -3,10 +3,10 @@
 #include <QPen>
 #include "torre.h"
 #include "listatorres.h"
-
+#include <QObject>
 
 class ListaGladiador;
-class NodoMatriz
+class NodoMatriz : public QObject
 {
 public:
     NodoMatriz(int corx,int cory);
@@ -20,15 +20,13 @@ public:
     bool free;
     void setTorre(Torre *torre);
     void setVigilante(Torre *vigilante);
+    void setGladiadores(ListaGladiador *gladiadores);
+
+public slots:
     ListaTorre *listaVigilantes;
     ListaGladiador *listaGladiadores;
-    void lleganFlechas();
-    //void setAtacadoPor(Torre *torre);
-    //Torre* getAtacadoPor();
-    void quitarAtacadoPor();
+    void lleganFlechas(int daño);
 
-private:
-    //Torre *atacadoPor;
 };
 
 #endif // NODOMATRIZ_H

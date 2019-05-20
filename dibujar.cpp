@@ -57,7 +57,7 @@ void Dibujar::PintarFlechas(QPainter *painter, int xc, int yc){
     con.setColor(QColor(247, 37, 191));
     painter->setPen(con);
     painter->setBrush(QBrush(QColor(247, 37, 191)));
-    painter->drawEllipse(xc,yc,4,4);
+    painter->drawEllipse(xc+20,yc+20,4,4);
 }
 
 void Dibujar::PintarFlechas2(QPainter *painter, int xi, int yi,int xf, int yf){
