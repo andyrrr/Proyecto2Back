@@ -185,13 +185,13 @@ void Juego::recibeCaminar(){
 
         if (Mejor1 == nullptr || temp->getResistencia()>Mejor1->getResistencia()){
             Mejor1=temp;
-            cout<<"Mejor 1: "<<Mejor1->getNombre()<<endl;
+            cout<<"Mejor 1: "<<Mejor1->getID()<<endl;
             cout<<"----------------------------------------------------------------------------------------------"<<endl;
         }
         if (Mejor2 == nullptr || (temp->getResistencia()>Mejor2->getResistencia() && temp!=Mejor1)){
             Mejor2=temp;
 
-            cout<<"Mejor 2: "<<Mejor2->getNombre()<<endl;
+            cout<<"Mejor 2: "<<Mejor2->getID()<<endl;
 
             cout<<"----------------------------------------------------------------------------------------------"<<endl;
         }
@@ -233,8 +233,33 @@ void Juego::recibeDisparo(){
 
 void Juego::iniciarJuego(){
     srand(time(NULL));
+    //for (int i=0;i<listaGladiadores->tamano();i++){
+    //    listaGladiadores->retornar(i)->getDato()->buscarCamino(matriz);
+    //}
+    Pair src = make_pair(0, 0);
+    Pair dest = make_pair(11, 11);
+
+    AStar *a = new AStar();
+    for (int fil=0; fil<12;fil++){
+        for (int col=0;col<12;col++){
+            NodoMatriz *temp = matriz[fil][col];
+            if (!(temp->free)){
+                a->blockCell(grid,fil,col);
+            }
+        }
+    }
+    a->aStarSearch(grid,src,dest);
+    a->finalPath->printNodes();
+    ListaNodoMatriz *camino = new ListaNodoMatriz();
+    for (int i=0;i<a->finalPath->size;i++){
+        int col=a->finalPath->getNode(i)->x_coord;
+        int fil=a->finalPath->getNode(i)->y_coord;
+        NodoMatriz *temp=matriz[col][fil];
+        camino->agregar(temp);
+    }
+    cout<<camino->toString()<<endl;
     for (int i=0;i<listaGladiadores->tamano();i++){
-        listaGladiadores->retornar(i)->getDato()->buscarCamino(matriz);
+        listaGladiadores->retornar(i)->getDato()->Camino=camino;
     }
     pro->start();
     dis->start();

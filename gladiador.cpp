@@ -21,8 +21,58 @@ Gladiador::Gladiador(int corx, int cory)
     LlegaFinal=false;
     ContNodo=0;
     Resistencia=0;
+
+    cromosome[6] = {};
 }
 
+
+Gladiador::Gladiador(int id,int corx, int cory)
+{
+    ID= id;
+    CorXIni=corx;
+    CorXFin=corx;
+    CorXCambio=corx;
+
+    CorYIni=cory;
+    CorYFin=cory;
+    CorYCambio=cory;
+    Actual=nullptr;
+    llegaX=false;
+    llegaY=false;
+    Camino = new ListaNodoMatriz();
+    LlegaFinal=false;
+    ContNodo=0;
+    Resistencia=0;
+
+    cromosome[8] = {};
+}
+
+
+int Gladiador::getID() const
+{
+    return ID;
+}
+
+void Gladiador::setID(int value)
+{
+    ID = value;
+}
+
+int Gladiador::getCromo(){
+    return *this->cromosome;
+}
+void Gladiador::printCromo(){
+    for (int var = 0; var < 9; ++var) {
+        cout<<cromosome[var]<<endl;
+    }
+}
+
+
+void Gladiador::setCromosome(int* cromo){
+    for (int var = 0; var < 9; ++var) {
+        this->cromosome[var] = cromo[var];
+    }
+}
 void Gladiador::setActual(NodoMatriz *actual){
     Actual=actual;
 }
@@ -81,7 +131,6 @@ int Gladiador::getResistencia(){
 }
 
 void Gladiador::setResistencia(int daño){
-    cout<<"ME ATACAN AAAA"<<endl;
     Resistencia=Resistencia-daño;
 }
 

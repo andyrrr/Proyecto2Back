@@ -9,7 +9,14 @@
 #include "listaflechas.h"
 #include "workerdisparar.h"
 
+#include<bits/stdc++.h>
+#include "astar.h"
+
 #include <QMouseEvent>
+
+typedef pair<int, int> Pair;//nodos
+typedef pair<double, pair<int, int>> pPair; //lista
+
 
 class Juego;
 
@@ -48,6 +55,23 @@ public:
     bool pasas;
     ListaNodoMatriz *camp = new ListaNodoMatriz();
     bool GladiadoresLlegan();
+
+    int grid[ROW][COL] =
+    {
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1 },
+
+    };
 
 protected:
     void paintEvent(QPaintEvent *event) override;

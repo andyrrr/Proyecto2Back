@@ -20,7 +20,7 @@ void WorkerDisparar::run(){
     int segundos=0;
     while (end==false){
         //25000
-        usleep(12500);
+        usleep(50000);
         segundos++;
         emit progreso();
     }

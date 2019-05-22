@@ -25,35 +25,44 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        astar.cpp \
         capagladiador.cpp \
         capatorres.cpp \
         dibujar.cpp \
         flecha.cpp \
         gladiador.cpp \
+        json_m.cpp \
         juego.cpp \
+        list.cpp \
         listaflechas.cpp \
         listagladiadores.cpp \
         listanodos.cpp \
         listatorres.cpp \
         main.cpp \
         inicio.cpp \
+        node.cpp \
         nodomatriz.cpp \
         torre.cpp \
         workercaminar.cpp \
         workerdisparar.cpp
 
 HEADERS += \
+        astar.h \
         capagladiador.h \
         capatorres.h \
         dibujar.h \
         flecha.h \
         gladiador.h \
         inicio.h \
+        json.hpp \
+        json_m.h \
         juego.h \
+        list.h \
         listaflechas.h \
         listagladiadores.h \
         listanodos.h \
         listatorres.h \
+        node.h \
         nodomatriz.h \
         torre.h \
         workercaminar.h \

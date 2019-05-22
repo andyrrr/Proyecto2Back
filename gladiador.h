@@ -12,6 +12,7 @@ class Gladiador
 {
 public:
     Gladiador(int corX, int corY);
+    Gladiador(int id,int corX, int corY);
 
     void setNombre(string nombre);
     void setCorde();
@@ -21,6 +22,12 @@ public:
     void setActual(NodoMatriz *actual);
     void setResistencia(int daño);
 
+
+    int getID() const;
+    void setID(int value);
+
+    int getCromo();
+    void printCromo();
     string getNombre();
     NodoMatriz* getActual();
     int getCorXIni();
@@ -32,6 +39,7 @@ public:
     bool getLlegaNodo();
     bool getLlegaFinal();
     int getResistencia();
+    void setCromosome(int[]);
 
     int Resistencia;
 
@@ -44,8 +52,8 @@ public:
     void QuitarActual();
     string toString();
     int ContNodo;
-private:
     ListaNodoMatriz *Camino;
+private:
     NodoMatriz *Actual;
     string Nombre="";
     int CorXIni;
@@ -58,6 +66,9 @@ private:
     bool LlegaFinal;
     bool llegaX;
     bool llegaY;
+
+    int cromosome[9];
+    int ID;
 };
 
 
