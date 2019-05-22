@@ -24,7 +24,7 @@ Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiad
     pro->terminar(false);
     repaint();
     pasas = true;
-
+/*
     cout<<"-----------------------------------------------------------------------------------------------"<<endl;
     cout<<"Gladiadores--------------------------------------------------------------"<<endl;
     cout<<listaGladiadores->toString()<<endl;
@@ -32,6 +32,7 @@ Juego::Juego(Dibujar *dibujar, QWidget *parent, ListaTorre *torres, ListaGladiad
     cout<<listaTorres->toString()<<endl;
     cout<<"flecchas--------------------------------------------------------------"<<endl;
     cout<<listaFlechas->toString()<<endl;
+*/
 }
 
 void Juego::generarMatriz(){
@@ -67,7 +68,7 @@ void Juego::mousePressEvent(QMouseEvent *event){
         int glaY= temp->getCorYCambio();
         if(event->x()<glaX+20 && event->x()>glaX && event->y()<glaY+20 && event->y()>glaY){
             cout<<"Se presionó el gladiador: "<<temp->getNombre()<<endl;
-            emit (mostrarGladiador());
+            emit (mostrarGladiador(temp));
             break;
         }
     }
@@ -169,7 +170,7 @@ void Juego::estaEnNodo(Gladiador *p){
                 if (p->getActual()==nullptr){
                     p->setActual(matriz[col][fila]);
                 }
-                matriz[col][fila]->setContorno(Qt::yellow);
+                //matriz[col][fila]->setContorno(Qt::yellow);
             }
         }
     }
@@ -194,6 +195,9 @@ void Juego::recibeCaminar(){
 
             cout<<"----------------------------------------------------------------------------------------------"<<endl;
         }
+
+        Gladiador *temp2=nullptr;
+        emit (mostrarGladiador(temp2));
         repaint();
     }
 

@@ -7,7 +7,6 @@ using namespace std;
 
 WorkerDisparar::WorkerDisparar(QObject *parent): QThread(parent)
 {
-    cout<<"Se inicializa el worker para disparar"<<endl;
     end=false;
 }
 

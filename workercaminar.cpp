@@ -8,7 +8,6 @@ using namespace std;
 
 WorkerCaminar::WorkerCaminar(QObject *parent): QThread(parent)
 {
-    cout<<"Se inicializa el worker para caminar"<<endl;
     end=false;
 }
 

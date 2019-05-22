@@ -19,6 +19,6 @@ private:
     Dibujar *Dibu;
     Gladiador *selec;
 public slots:
-    void recibirGladidor();
+    void recibirGladidor(Gladiador *selec);
 };
 #endif // CAPAGLADIADOR_H

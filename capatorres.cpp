@@ -2,26 +2,29 @@
 #include <QPainter>
 #include "qdebug.h"
 
-CapaTorres::CapaTorres(Dibujar *dibujar, QWidget *parent):
-    QWidget (parent), Dibu(dibujar)
+CapaTorres::CapaTorres(Dibujar *dibujar, QWidget *parent, ListaTorre *general):
+    QWidget (parent), Dibu(dibujar), General(general)
 {
     tipos= new ListaTorre();
     tipoSelec=nullptr;
     genTorres();
+    Dibu->setTorres(General);
     repaint();
 }
 
 void CapaTorres::paintEvent(QPaintEvent *event){
     QPainter painter;
     painter.begin(this);
-    qDebug()<<"desde capa de torres"<<tipos->tamano();
     Dibu->PintarFondo(&painter, 161,511,QBrush(Qt::white));
 
     for (int i=0;i<tipos->tamano();i++){
-        int x= tipos->retornar(i)->getDato()->CorX;
-        int y= tipos->retornar(i)->getDato()->CorY;
+        Torre *temp=tipos->retornar(i)->getDato();
+        int x= temp->CorX;
+        int y= temp->CorY;
         Dibu->PintarTorres(&painter,x,y,tipos->retornar(i)->getDato()->contorno,tipos->retornar(i)->getDato()->Tipo);
+
     }
+    Dibu->PintarInfor(&painter);
 }
 void CapaTorres::mousePressEvent(QMouseEvent *event){
     Torre *temp;

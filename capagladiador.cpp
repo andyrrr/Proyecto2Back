@@ -12,11 +12,12 @@ void CapaGladiador::paintEvent(QPaintEvent *event){
     painter.begin(this);
     Dibu->PintarFondo(&painter, 160,591,QBrush(Qt::white));
     if (gladiador){
-        Dibu->PintarGladiadores(&painter,100,100);
+        Dibu->PintarGladiadores(&painter,selec);
     }
 }
 
-void CapaGladiador::recibirGladidor(){
+void CapaGladiador::recibirGladidor(Gladiador *gselec){
     gladiador=true;
+    selec= gselec;
     repaint();
 }

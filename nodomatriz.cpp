@@ -22,14 +22,7 @@ void NodoMatriz::setGladiadores(ListaGladiador *gladiadores){
 
 void NodoMatriz::setContorno(QColor color){
     contorno.setColor(color);
-}/*
-void NodoMatriz::setAtacadoPor(Torre *torre){
-    atacadoPor=torre;
 }
-
-Torre* NodoMatriz::getAtacadoPor(){
-    return atacadoPor;
-}*/
 
 
 void NodoMatriz::setTorre(Torre *torre){

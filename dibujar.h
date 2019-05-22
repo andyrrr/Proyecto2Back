@@ -18,9 +18,16 @@ public:
      void PintarTorres(QPainter *painter, int x, int y, QPen contorno,int tipo);
      void PintarMatriz(QPainter *painter, int x, int y, QPen contorno);
      void PintarFlechas2(QPainter *painter, int xi, int yi, int xf, int yf);
+     void PintarGladiadores(QPainter *painter, Gladiador *gladiador);
      void PintarFlechas(QPainter *painter, int x, int y);
+     void PintarInfor(QPainter *painter);
+     void setTorres(ListaTorre *torres);
 private:
      QPen contorno;
+     QPen textPen;
+     QFont textFont;
+     Gladiador *mostrar;
+     ListaTorre *Torres;
 
 };
 

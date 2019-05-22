@@ -57,7 +57,7 @@ private:
 
 signals:
     void ponerTorre();
-    void mostrarGladiador();
+    void mostrarGladiador(Gladiador *selec);
     void terminaIteracion();
 public slots:
     void recibeCaminar();

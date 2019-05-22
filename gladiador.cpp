@@ -90,7 +90,7 @@ void Gladiador::SalioNodo(){
     int nodoX=Actual->CorX;
     int nodoY=Actual->CorY;
     if(!(CorXCambio<nodoX+40 && CorXCambio>nodoX && CorYCambio<nodoY+40 && CorYCambio>nodoY)){
-        Actual->setContorno(Qt::black);
+        //Actual->setContorno(Qt::black);
         QuitarActual();
     }
     }

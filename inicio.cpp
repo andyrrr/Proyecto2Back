@@ -18,27 +18,7 @@ Inicio::Inicio(QWidget *parent) :
 
     ui->setupUi(this);
     Iteracion();
-/*
-    getTorres();
-    getGladiadores();
 
-    Juego1 = new Juego(&dibuJuego,this, listaTorres, listaGladiadores);
-    torres = new CapaTorres(&dibuTorres,this);
-    gladiador = new CapaGladiador(&dibuGla,this);
-
-
-    ui->LayoutJuego->addWidget(Juego1,0,Qt::Alignment());
-
-
-    ui->LayoutTorres->addWidget(torres,0,Qt::Alignment());
-
-    ui->LayoutGladiadores->addWidget(gladiador,0,Qt::Alignment());
-
-    connect(Juego1,SIGNAL(ponerTorre()),this,SLOT(revisar()));
-    connect(torres,SIGNAL(SeleccionoTipo()),Juego1,SLOT(mostrarNodos()));
-    connect(Juego1,SIGNAL(mostrarGladiador()),gladiador,SLOT(recibirGladidor()));
-    connect(Juego1,SIGNAL(terminaIteracion()),this,SLOT(Iteracion()));
-*/
 }
 
 
@@ -98,6 +78,7 @@ void Inicio::revisar(){
             Juego1->nodoSelec=nullptr;
         }
     }
+    torres->repaint();
 }
 
 void Inicio::Iteracion(){
@@ -116,7 +97,7 @@ void Inicio::Iteracion(){
     getTorres();
     getGladiadores();
     Juego1 = new Juego(&dibuJuego,this, listaTorres, listaGladiadores);
-    torres = new CapaTorres(&dibuTorres,this);
+    torres = new CapaTorres(&dibuTorres,this, listaTorres);
     gladiador = new CapaGladiador(&dibuGla,this);
 
 
@@ -128,7 +109,7 @@ void Inicio::Iteracion(){
 
     connect(Juego1,SIGNAL(ponerTorre()),this,SLOT(revisar()));
     connect(torres,SIGNAL(SeleccionoTipo()),Juego1,SLOT(mostrarNodos()));
-    connect(Juego1,SIGNAL(mostrarGladiador()),gladiador,SLOT(recibirGladidor()));
+    connect(Juego1,SIGNAL(mostrarGladiador(Gladiador*)),gladiador,SLOT(recibirGladidor(Gladiador*)));
     connect(Juego1,SIGNAL(terminaIteracion()),this,SLOT(Iteracion()));
 
 }

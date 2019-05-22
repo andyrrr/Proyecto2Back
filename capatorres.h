@@ -13,9 +13,10 @@ class CapaTorres : public QWidget
 {
     Q_OBJECT
 public:
-    CapaTorres(Dibujar *dibujar, QWidget *parent);
+    CapaTorres(Dibujar *dibujar, QWidget *parent, ListaTorre *general);
     void genTorres();
     ListaTorre *tipos;
+    ListaTorre *General;
     void mousePressEvent(QMouseEvent *event) override;
     Torre *tipoSelec;
 protected:
